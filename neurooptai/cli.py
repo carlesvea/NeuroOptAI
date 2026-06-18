@@ -1,7 +1,6 @@
 import argparse
+from neurooptai import __version__
 from neurooptai.controllers.training_controller import TrainingController
-
-VERSION = "0.1.0"
 
 
 def run_demo():
@@ -26,7 +25,7 @@ def main():
     if args.command == "demo":
         run_demo()
     elif args.command == "version":
-        print(f"NeuroOptAI {VERSION}")
+        print(f"NeuroOptAI {__version__}")
 
 
 if __name__ == "__main__":
