@@ -1,3 +1,4 @@
+from neurooptai.core.training_state import TrainingState
 from neurooptai.sensors.loss_sensor import LossSensor
 from neurooptai.sensors.gradient_norm_sensor import GradientNormSensor
 from neurooptai.sensors.learning_rate_sensor import LearningRateSensor
@@ -24,6 +25,14 @@ class TrainingController:
 
         self.priority_system = DecisionPrioritySystem()
         self.gradient_threshold = gradient_threshold
+
+    def log_state(self, state: TrainingState):
+        return self.log_epoch(
+            train_loss=state.train_loss,
+            validation_loss=state.validation_loss,
+            gradient_norm=state.gradient_norm,
+            learning_rate=state.learning_rate,
+        )
 
     def log_epoch(self, train_loss, validation_loss, gradient_norm=None, learning_rate=None):
         actions = []
