@@ -57,3 +57,14 @@ class TrainingController:
             "recommendation": "Training looks stable.",
             "should_stop": False,
         }
+
+    def status(self):
+        latest_losses = self.loss_sensor.latest()
+
+        return {
+            "epochs_logged": len(self.loss_sensor.train_losses),
+            "latest_train_loss": latest_losses["train_loss"],
+            "latest_validation_loss": latest_losses["validation_loss"],
+            "latest_gradient_norm": self.gradient_norm_sensor.latest(),
+            "latest_learning_rate": self.learning_rate_sensor.latest(),
+        }
