@@ -70,3 +70,15 @@ PYTHONPATH=. python experiments/demo_json_logging.py
 ## Author
 
 Carles X. Vea
+
+## Installation
+
+Install NeuroOptAI locally in editable mode:
+
+pip install -e .
+
+## CLI usage
+
+Run the demo from the command line:
+
+neurooptai demo
