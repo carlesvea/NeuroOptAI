@@ -84,3 +84,19 @@ pip install -e .
 Run the demo from the command line:
 
 neurooptai demo
+
+## CLI commands
+
+Show the installed version:
+
+neurooptai version
+
+Run the demo:
+
+neurooptai demo
+
+## Tests
+
+Run the test suite locally:
+
+pytest
