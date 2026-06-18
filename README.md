@@ -61,6 +61,8 @@ PYTHONPATH=. python experiments/demo_priority.py
 
 PYTHONPATH=. python experiments/demo_json_logging.py
 
+PYTHONPATH=. python experiments/demo_status.py
+
 ## Roadmap
 
 - Add CLI interface
