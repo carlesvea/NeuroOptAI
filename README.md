@@ -1,3 +1,5 @@
+[![NeuroOptAI Tests](https://github.com/carlesvea/NeuroOptAI/actions/workflows/tests.yml/badge.svg)](https://github.com/carlesvea/NeuroOptAI/actions/workflows/tests.yml)
+
 # NeuroOptAI
 
 Intelligent autopilot for monitoring and optimizing neural network training.
