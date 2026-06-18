@@ -2,11 +2,11 @@
 
 Intelligent autopilot for monitoring and optimizing neural network training.
 
-NeuroOptAI is a Python library designed to observe neural network training, detect common problems, and recommend optimization actions.
+NeuroOptAI is a Python library designed to observe neural network training, detect common problems, prioritize alerts, and recommend optimization actions.
 
 ## Core loop
 
-sensors -> diagnostics -> actions -> controller
+sensors -> diagnostics -> actions -> decision priority -> controller
 
 ## Current MVP
 
@@ -20,6 +20,7 @@ NeuroOptAI currently supports:
 - Early stopping recommendation
 - Gradient clipping recommendation
 - Learning rate reduction recommendation
+- Decision priority system
 
 ## Available components
 
@@ -40,9 +41,10 @@ NeuroOptAI currently supports:
 - GradientClippingAction
 - ReduceLearningRateAction
 
-### Controller
+### Controllers
 
 - TrainingController
+- DecisionPrioritySystem
 
 ## Examples
 
@@ -53,6 +55,10 @@ PYTHONPATH=. python experiments/demo_controller.py
 Run the stagnation demo:
 
 PYTHONPATH=. python experiments/demo_stagnation.py
+
+Run the priority demo:
+
+PYTHONPATH=. python experiments/demo_priority.py
 
 ## Project structure
 
@@ -66,15 +72,15 @@ neurooptai/
 experiments/
   demo_controller.py
   demo_stagnation.py
+  demo_priority.py
 
 ## Roadmap
 
+- Add JSON logging
+- Add CLI interface
 - Add PyTorch training loop integration
 - Add MNIST experiment
 - Add CIFAR-10 experiment
-- Add automatic decision priority system
-- Add JSON logging
-- Add CLI interface
 - Package as installable Python library
 
 ## Author
