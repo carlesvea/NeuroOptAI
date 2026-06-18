@@ -2,43 +2,57 @@
 
 Intelligent autopilot for monitoring and optimizing neural network training.
 
-NeuroOptAI is a Python library designed to observe neural network training, detect common problems, and recommend or trigger optimization actions.
+NeuroOptAI is a Python library designed to observe neural network training, detect common problems, and recommend optimization actions.
 
-## Core idea
-
-NeuroOptAI follows a simple loop:
+## Core loop
 
 sensors -> diagnostics -> actions -> controller
 
-It monitors signals such as:
-
-- Train loss
-- Validation loss
-- Gradient behavior
-- Learning rate
-- Training stability
-
 ## Current MVP
 
-The current MVP includes:
+NeuroOptAI currently supports:
+
+- Loss monitoring
+- Gradient norm monitoring
+- Learning rate monitoring
+- Overfitting detection
+- Stagnation detection
+- Early stopping recommendation
+- Gradient clipping recommendation
+- Learning rate reduction recommendation
+
+## Available components
+
+### Sensors
 
 - LossSensor
+- GradientNormSensor
+- LearningRateSensor
+
+### Diagnostics
+
 - OverfittingDetector
+- StagnationDetector
+
+### Actions
+
 - EarlyStoppingAction
+- GradientClippingAction
+- ReduceLearningRateAction
+
+### Controller
+
 - TrainingController
-- Demo experiment
 
-## Example
+## Examples
 
-Run the demo:
+Run the main demo:
 
 PYTHONPATH=. python experiments/demo_controller.py
 
-Expected behavior:
+Run the stagnation demo:
 
-Epoch 1: continue training
-Epoch 2: continue training
-Epoch 3: early stopping recommendation
+PYTHONPATH=. python experiments/demo_stagnation.py
 
 ## Project structure
 
@@ -51,16 +65,17 @@ neurooptai/
 
 experiments/
   demo_controller.py
+  demo_stagnation.py
 
 ## Roadmap
 
-- Add gradient norm sensor
-- Add learning rate monitor
-- Add stagnation detector
-- Add adaptive learning rate action
 - Add PyTorch training loop integration
-- Test on MNIST
-- Test on CIFAR-10
+- Add MNIST experiment
+- Add CIFAR-10 experiment
+- Add automatic decision priority system
+- Add JSON logging
+- Add CLI interface
+- Package as installable Python library
 
 ## Author
 
