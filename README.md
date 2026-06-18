@@ -102,3 +102,13 @@ neurooptai demo
 Run the test suite locally:
 
 pytest
+
+## Development install
+
+Install NeuroOptAI with development dependencies:
+
+pip install -e ".[dev]"
+
+Run tests:
+
+pytest
