@@ -20,3 +20,17 @@ def test_reduce_learning_rate_on_stagnation():
 
     assert result["action"] == "reduce_learning_rate"
     assert result["new_learning_rate"] == 0.0005
+
+
+def test_controller_status():
+    controller = TrainingController(gradient_threshold=1.0, stagnation_patience=2)
+
+    controller.log_epoch(1.0, 0.9, 0.5, 0.001)
+
+    status = controller.status()
+
+    assert status["epochs_logged"] == 1
+    assert status["latest_train_loss"] == 1.0
+    assert status["latest_validation_loss"] == 0.9
+    assert status["latest_gradient_norm"] == 0.5
+    assert status["latest_learning_rate"] == 0.001
