@@ -2,6 +2,7 @@ import argparse
 import json
 from neurooptai import __version__
 from neurooptai.controllers.training_controller import TrainingController
+from neurooptai.utils.json_logger import JSONLogger
 
 
 def run_demo():
@@ -50,6 +51,17 @@ def run_analyze(args):
         avoided_bad_branch_cost=args.avoided_bad_branch_cost,
     )
 
+    if args.log_file:
+        logger = JSONLogger(args.log_file)
+        logger.log({
+            "command": "analyze",
+            "train_loss": args.train_loss,
+            "validation_loss": args.validation_loss,
+            "gradient_norm": args.gradient_norm,
+            "learning_rate": args.learning_rate,
+            "decision": result,
+        })
+
     if args.json_output:
         print(json.dumps(result, indent=2))
     else:
@@ -76,6 +88,7 @@ def main():
     analyze.add_argument("--optimization-cost", type=float, default=0.0)
     analyze.add_argument("--avoided-bad-branch-cost", type=float, default=None)
     analyze.add_argument("--json-output", action="store_true")
+    analyze.add_argument("--log-file", type=str, default=None)
 
     args = parser.parse_args()
 
