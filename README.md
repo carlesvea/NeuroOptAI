@@ -147,3 +147,13 @@ This shows two cases:
 
 - HALO blocks an intervention when the intervention cost is too high.
 - HALO allows an intervention when the avoided bad-branch cost is higher.
+
+## Analyze command
+
+Analyze one training state directly from the CLI:
+
+neurooptai analyze --train-loss 1.0 --validation-loss 1.1 --gradient-norm 2.5 --learning-rate 0.001
+
+With HALO enabled:
+
+neurooptai analyze --train-loss 1.0 --validation-loss 1.1 --gradient-norm 2.5 --learning-rate 0.001 --halo-enabled --meta-control-cost 1.0 --optimization-cost 1.0 --avoided-bad-branch-cost 10.0
