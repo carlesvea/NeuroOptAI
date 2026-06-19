@@ -157,3 +157,9 @@ neurooptai analyze --train-loss 1.0 --validation-loss 1.1 --gradient-norm 2.5 --
 With HALO enabled:
 
 neurooptai analyze --train-loss 1.0 --validation-loss 1.1 --gradient-norm 2.5 --learning-rate 0.001 --halo-enabled --meta-control-cost 1.0 --optimization-cost 1.0 --avoided-bad-branch-cost 10.0
+
+## JSON output
+
+Return analyze results as JSON:
+
+neurooptai analyze --train-loss 1.0 --validation-loss 1.1 --gradient-norm 2.5 --learning-rate 0.001 --json-output
