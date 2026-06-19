@@ -53,3 +53,24 @@ def test_cli_analyze():
     )
 
     assert "gradient_clipping" in result.stdout
+
+
+def test_cli_analyze_json_output():
+    import json
+
+    result = subprocess.run(
+        [
+            sys.executable, "-m", "neurooptai.cli", "analyze",
+            "--train-loss", "1.0",
+            "--validation-loss", "1.1",
+            "--gradient-norm", "2.5",
+            "--learning-rate", "0.001",
+            "--json-output",
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+    parsed = json.loads(result.stdout)
+    assert parsed["action"] == "gradient_clipping"

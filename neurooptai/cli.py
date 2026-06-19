@@ -1,4 +1,5 @@
 import argparse
+import json
 from neurooptai import __version__
 from neurooptai.controllers.training_controller import TrainingController
 
@@ -49,7 +50,10 @@ def run_analyze(args):
         avoided_bad_branch_cost=args.avoided_bad_branch_cost,
     )
 
-    print(result)
+    if args.json_output:
+        print(json.dumps(result, indent=2))
+    else:
+        print(result)
 
 
 def main():
@@ -71,6 +75,7 @@ def main():
     analyze.add_argument("--meta-control-cost", type=float, default=0.0)
     analyze.add_argument("--optimization-cost", type=float, default=0.0)
     analyze.add_argument("--avoided-bad-branch-cost", type=float, default=None)
+    analyze.add_argument("--json-output", action="store_true")
 
     args = parser.parse_args()
 
