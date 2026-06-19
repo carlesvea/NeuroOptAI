@@ -136,3 +136,14 @@ intervention cost < avoided bad branch cost
 Run the HALO controller demo:
 
 PYTHONPATH=. python experiments/demo_halo_controller.py
+
+## HALO CLI
+
+Run the HALO cost-aware controller demo:
+
+neurooptai halo
+
+This shows two cases:
+
+- HALO blocks an intervention when the intervention cost is too high.
+- HALO allows an intervention when the avoided bad-branch cost is higher.
