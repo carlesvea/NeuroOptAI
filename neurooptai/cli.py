@@ -5,6 +5,7 @@ from neurooptai.controllers.training_controller import TrainingController
 
 def run_demo():
     controller = TrainingController(gradient_threshold=1.0, stagnation_patience=2)
+
     history = [
         (1.0, 1.00, 0.5, 0.001),
         (0.8, 1.05, 0.5, 0.001),
@@ -24,29 +25,53 @@ def run_halo_demo():
         optimization_cost=2.0,
     )
 
-    blocked = controller.log_epoch(
-        train_loss=1.0,
-        validation_loss=1.0,
-        gradient_norm=2.5,
-        learning_rate=0.001,
-        avoided_bad_branch_cost=3.0,
-    )
-
-    allowed = controller.log_epoch(
-        train_loss=0.9,
-        validation_loss=1.1,
-        gradient_norm=2.5,
-        learning_rate=0.001,
-        avoided_bad_branch_cost=10.0,
-    )
+    blocked = controller.log_epoch(1.0, 1.0, 2.5, 0.001, avoided_bad_branch_cost=3.0)
+    allowed = controller.log_epoch(0.9, 1.1, 2.5, 0.001, avoided_bad_branch_cost=10.0)
 
     print("HALO blocked case:", blocked)
     print("HALO allowed case:", allowed)
 
 
+def run_analyze(args):
+    controller = TrainingController(
+        gradient_threshold=args.gradient_threshold,
+        stagnation_patience=args.stagnation_patience,
+        halo_enabled=args.halo_enabled,
+        meta_control_cost=args.meta_control_cost,
+        optimization_cost=args.optimization_cost,
+    )
+
+    result = controller.log_epoch(
+        train_loss=args.train_loss,
+        validation_loss=args.validation_loss,
+        gradient_norm=args.gradient_norm,
+        learning_rate=args.learning_rate,
+        avoided_bad_branch_cost=args.avoided_bad_branch_cost,
+    )
+
+    print(result)
+
+
 def main():
     parser = argparse.ArgumentParser(description="NeuroOptAI command line interface")
-    parser.add_argument("command", choices=["demo", "halo", "version"], help="Command to execute")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    subparsers.add_parser("demo")
+    subparsers.add_parser("halo")
+    subparsers.add_parser("version")
+
+    analyze = subparsers.add_parser("analyze")
+    analyze.add_argument("--train-loss", type=float, required=True)
+    analyze.add_argument("--validation-loss", type=float, required=True)
+    analyze.add_argument("--gradient-norm", type=float, default=None)
+    analyze.add_argument("--learning-rate", type=float, default=None)
+    analyze.add_argument("--gradient-threshold", type=float, default=1.0)
+    analyze.add_argument("--stagnation-patience", type=int, default=3)
+    analyze.add_argument("--halo-enabled", action="store_true")
+    analyze.add_argument("--meta-control-cost", type=float, default=0.0)
+    analyze.add_argument("--optimization-cost", type=float, default=0.0)
+    analyze.add_argument("--avoided-bad-branch-cost", type=float, default=None)
+
     args = parser.parse_args()
 
     if args.command == "demo":
@@ -55,6 +80,8 @@ def main():
         run_halo_demo()
     elif args.command == "version":
         print(f"NeuroOptAI {__version__}")
+    elif args.command == "analyze":
+        run_analyze(args)
 
 
 if __name__ == "__main__":
