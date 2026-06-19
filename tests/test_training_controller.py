@@ -58,3 +58,43 @@ def test_log_state_uses_training_state():
     assert status["latest_validation_loss"] == 0.9
     assert status["latest_gradient_norm"] == 0.5
     assert status["latest_learning_rate"] == 0.001
+
+
+def test_halo_blocks_intervention_when_cost_is_too_high():
+    controller = TrainingController(
+        gradient_threshold=1.0,
+        halo_enabled=True,
+        meta_control_cost=5.0,
+        optimization_cost=5.0,
+    )
+
+    result = controller.log_epoch(
+        train_loss=1.0,
+        validation_loss=1.0,
+        gradient_norm=2.5,
+        learning_rate=0.001,
+        avoided_bad_branch_cost=3.0,
+    )
+
+    assert result["action"] == "continue_training"
+    assert "halo" in result
+    assert result["halo"]["intervention_cost"] == 10.0
+
+
+def test_halo_allows_intervention_when_benefit_is_higher():
+    controller = TrainingController(
+        gradient_threshold=1.0,
+        halo_enabled=True,
+        meta_control_cost=1.0,
+        optimization_cost=1.0,
+    )
+
+    result = controller.log_epoch(
+        train_loss=1.0,
+        validation_loss=1.0,
+        gradient_norm=2.5,
+        learning_rate=0.001,
+        avoided_bad_branch_cost=10.0,
+    )
+
+    assert result["action"] == "gradient_clipping"
