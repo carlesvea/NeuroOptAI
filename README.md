@@ -163,3 +163,9 @@ neurooptai analyze --train-loss 1.0 --validation-loss 1.1 --gradient-norm 2.5 --
 Return analyze results as JSON:
 
 neurooptai analyze --train-loss 1.0 --validation-loss 1.1 --gradient-norm 2.5 --learning-rate 0.001 --json-output
+
+## Analyze logging
+
+Save analyze decisions to a JSON Lines log file:
+
+neurooptai analyze --train-loss 1.0 --validation-loss 1.1 --gradient-norm 2.5 --learning-rate 0.001 --log-file neurooptai_analyze_log.jsonl
