@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, UTC
 
 
 class JSONLogger:
@@ -13,7 +13,7 @@ class JSONLogger:
 
     def log(self, event):
         record = {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(UTC).isoformat(),
             **event,
         }
 
