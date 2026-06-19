@@ -124,3 +124,15 @@ NeuroOptAI should only intervene when the expected benefit is greater than the c
 Run the HALO demo:
 
 PYTHONPATH=. python experiments/demo_halo.py
+
+## HALO controller integration
+
+The TrainingController can optionally use HALO as a cost-aware gate.
+
+When HALO is enabled, NeuroOptAI only applies an intervention if:
+
+intervention cost < avoided bad branch cost
+
+Run the HALO controller demo:
+
+PYTHONPATH=. python experiments/demo_halo_controller.py
