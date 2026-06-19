@@ -112,3 +112,15 @@ pip install -e ".[dev]"
 Run tests:
 
 pytest
+
+## HALO Principle
+
+HALO means:
+
+meta-control cost + optimization cost < cost of avoided bad training branches
+
+NeuroOptAI should only intervene when the expected benefit is greater than the cost of intervention.
+
+Run the HALO demo:
+
+PYTHONPATH=. python experiments/demo_halo.py
