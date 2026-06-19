@@ -34,3 +34,27 @@ def test_controller_status():
     assert status["latest_validation_loss"] == 0.9
     assert status["latest_gradient_norm"] == 0.5
     assert status["latest_learning_rate"] == 0.001
+
+
+def test_log_state_uses_training_state():
+    from neurooptai.core.training_state import TrainingState
+
+    controller = TrainingController(gradient_threshold=1.0, stagnation_patience=2)
+
+    state = TrainingState(
+        epoch=1,
+        train_loss=1.0,
+        validation_loss=0.9,
+        gradient_norm=0.5,
+        learning_rate=0.001,
+    )
+
+    result = controller.log_state(state)
+    status = controller.status()
+
+    assert result["action"] == "continue_training"
+    assert status["epochs_logged"] == 1
+    assert status["latest_train_loss"] == 1.0
+    assert status["latest_validation_loss"] == 0.9
+    assert status["latest_gradient_norm"] == 0.5
+    assert status["latest_learning_rate"] == 0.001
