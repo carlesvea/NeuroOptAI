@@ -23,3 +23,16 @@ def test_cli_demo():
 
     assert "Epoch 1" in result.stdout
     assert "gradient_clipping" in result.stdout
+
+
+def test_cli_halo():
+    result = subprocess.run(
+        [sys.executable, "-m", "neurooptai.cli", "halo"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+    assert "HALO blocked case" in result.stdout
+    assert "HALO allowed case" in result.stdout
+    assert "gradient_clipping" in result.stdout
