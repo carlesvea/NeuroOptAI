@@ -184,3 +184,22 @@ result = analyze_training_state(
 )
 
 print(result)
+
+## Python API with HALO
+
+Use HALO cost-aware gating from Python:
+
+from neurooptai import analyze_training_state
+
+result = analyze_training_state(
+    train_loss=1.0,
+    validation_loss=1.1,
+    gradient_norm=2.5,
+    learning_rate=0.001,
+    halo_enabled=True,
+    meta_control_cost=1.0,
+    optimization_cost=1.0,
+    avoided_bad_branch_cost=10.0,
+)
+
+print(result)
