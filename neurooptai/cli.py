@@ -1,7 +1,6 @@
 import argparse
 import json
 import sys
-import sys
 from neurooptai import __version__
 from neurooptai.api import analyze_training_history
 from neurooptai.controllers.training_controller import TrainingController
@@ -69,32 +68,24 @@ def run_analyze_history(args):
             history = json.load(file)
 
         results = analyze_training_history(
-        history,
-        gradient_threshold=args.gradient_threshold,
-        stagnation_patience=args.stagnation_patience,
-        halo_enabled=args.halo_enabled,
-        meta_control_cost=args.meta_control_cost,
-        optimization_cost=args.optimization_cost,
-    )
+            history,
+            gradient_threshold=args.gradient_threshold,
+            stagnation_patience=args.stagnation_patience,
+            halo_enabled=args.halo_enabled,
+            meta_control_cost=args.meta_control_cost,
+            optimization_cost=args.optimization_cost,
+        )
 
-    if args.log_file:
-        logger = JSONLogger(args.log_file)
-        logger.log({
-            "command": "analyze-history",
-            "input_file": args.input_file,
-            "decisions": results,
-        })
+        if args.log_file:
+            logger = JSONLogger(args.log_file)
+            logger.log({
+                "command": "analyze-history",
+                "input_file": args.input_file,
+                "decisions": results,
+            })
 
-            print(json.dumps(results, indent=2) if args.json_output else results)
-    except FileNotFoundError:
-        print(f"Error: input file not found: {args.input_file}", file=sys.stderr)
-        raise SystemExit(1)
-    except json.JSONDecodeError as error:
-        print(f"Error: invalid JSON input: {error}", file=sys.stderr)
-        raise SystemExit(1)
-    except ValueError as error:
-        print(f"Error: {error}", file=sys.stderr)
-        raise SystemExit(1)
+        print(json.dumps(results, indent=2) if args.json_output else results)
+
     except FileNotFoundError:
         print(f"Error: input file not found: {args.input_file}", file=sys.stderr)
         raise SystemExit(1)
