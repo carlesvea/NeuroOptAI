@@ -217,3 +217,13 @@ history = [
 
 results = analyze_training_history(history)
 print(results)
+
+## Analyze training history from CLI
+
+Analyze a full training history from a JSON file:
+
+neurooptai analyze-history --input-file experiments/history_sample.json --json-output
+
+You can also save the decisions:
+
+neurooptai analyze-history --input-file experiments/history_sample.json --json-output --log-file neurooptai_history_log.jsonl
