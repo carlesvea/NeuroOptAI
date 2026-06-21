@@ -1,6 +1,18 @@
 from neurooptai.controllers.training_controller import TrainingController
 
 
+REQUIRED_HISTORY_KEYS = ("train_loss", "validation_loss")
+
+
+def _validate_history_state(state, index):
+    if not isinstance(state, dict):
+        raise ValueError(f"History item {index} must be a dictionary.")
+
+    missing = [key for key in REQUIRED_HISTORY_KEYS if key not in state]
+    if missing:
+        raise ValueError(f"History item {index} is missing required keys: {missing}")
+
+
 def analyze_training_state(
     train_loss,
     validation_loss,
@@ -38,6 +50,9 @@ def analyze_training_history(
     meta_control_cost=0.0,
     optimization_cost=0.0,
 ):
+    if not isinstance(history, list):
+        raise ValueError("Training history must be a list of dictionaries.")
+
     controller = TrainingController(
         gradient_threshold=gradient_threshold,
         stagnation_patience=stagnation_patience,
@@ -48,7 +63,9 @@ def analyze_training_history(
 
     results = []
 
-    for state in history:
+    for index, state in enumerate(history):
+        _validate_history_state(state, index)
+
         result = controller.log_epoch(
             train_loss=state["train_loss"],
             validation_loss=state["validation_loss"],

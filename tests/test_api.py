@@ -40,3 +40,25 @@ def test_analyze_training_history_api():
 
     assert len(results) == 2
     assert results[-1]["action"] == "gradient_clipping"
+
+
+def test_analyze_training_history_requires_list():
+    from neurooptai import analyze_training_history
+
+    try:
+        analyze_training_history({"train_loss": 1.0})
+    except ValueError as error:
+        assert "must be a list" in str(error)
+    else:
+        assert False
+
+
+def test_analyze_training_history_requires_validation_loss():
+    from neurooptai import analyze_training_history
+
+    try:
+        analyze_training_history([{"train_loss": 1.0}])
+    except ValueError as error:
+        assert "missing required keys" in str(error)
+    else:
+        assert False
