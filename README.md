@@ -227,3 +227,14 @@ neurooptai analyze-history --input-file experiments/history_sample.json --json-o
 You can also save the decisions:
 
 neurooptai analyze-history --input-file experiments/history_sample.json --json-output --log-file neurooptai_history_log.jsonl
+
+## Training history validation
+
+`analyze-history` validates the input JSON.
+
+The input file must contain a list of objects, and each object must include:
+
+- train_loss
+- validation_loss
+
+If the file is missing, invalid JSON, or missing required keys, NeuroOptAI returns a clear CLI error.
