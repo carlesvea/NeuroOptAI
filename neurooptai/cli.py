@@ -1,18 +1,14 @@
 import argparse
 import json
 from neurooptai import __version__
+from neurooptai.api import analyze_training_history
 from neurooptai.controllers.training_controller import TrainingController
 from neurooptai.utils.json_logger import JSONLogger
 
 
 def run_demo():
     controller = TrainingController(gradient_threshold=1.0, stagnation_patience=2)
-
-    history = [
-        (1.0, 1.00, 0.5, 0.001),
-        (0.8, 1.05, 0.5, 0.001),
-        (0.6, 1.10, 2.5, 0.001),
-    ]
+    history = [(1.0, 1.00, 0.5, 0.001), (0.8, 1.05, 0.5, 0.001), (0.6, 1.10, 2.5, 0.001)]
 
     for epoch, (train_loss, val_loss, grad_norm, lr) in enumerate(history, start=1):
         result = controller.log_epoch(train_loss, val_loss, grad_norm, lr)
@@ -62,10 +58,31 @@ def run_analyze(args):
             "decision": result,
         })
 
-    if args.json_output:
-        print(json.dumps(result, indent=2))
-    else:
-        print(result)
+    print(json.dumps(result, indent=2) if args.json_output else result)
+
+
+def run_analyze_history(args):
+    with open(args.input_file, "r", encoding="utf-8") as file:
+        history = json.load(file)
+
+    results = analyze_training_history(
+        history,
+        gradient_threshold=args.gradient_threshold,
+        stagnation_patience=args.stagnation_patience,
+        halo_enabled=args.halo_enabled,
+        meta_control_cost=args.meta_control_cost,
+        optimization_cost=args.optimization_cost,
+    )
+
+    if args.log_file:
+        logger = JSONLogger(args.log_file)
+        logger.log({
+            "command": "analyze-history",
+            "input_file": args.input_file,
+            "decisions": results,
+        })
+
+    print(json.dumps(results, indent=2) if args.json_output else results)
 
 
 def main():
@@ -90,6 +107,16 @@ def main():
     analyze.add_argument("--json-output", action="store_true")
     analyze.add_argument("--log-file", type=str, default=None)
 
+    history = subparsers.add_parser("analyze-history")
+    history.add_argument("--input-file", type=str, required=True)
+    history.add_argument("--gradient-threshold", type=float, default=1.0)
+    history.add_argument("--stagnation-patience", type=int, default=3)
+    history.add_argument("--halo-enabled", action="store_true")
+    history.add_argument("--meta-control-cost", type=float, default=0.0)
+    history.add_argument("--optimization-cost", type=float, default=0.0)
+    history.add_argument("--json-output", action="store_true")
+    history.add_argument("--log-file", type=str, default=None)
+
     args = parser.parse_args()
 
     if args.command == "demo":
@@ -100,6 +127,8 @@ def main():
         print(f"NeuroOptAI {__version__}")
     elif args.command == "analyze":
         run_analyze(args)
+    elif args.command == "analyze-history":
+        run_analyze_history(args)
 
 
 if __name__ == "__main__":

@@ -101,3 +101,27 @@ def test_cli_analyze_log_file(tmp_path):
     parsed = json.loads(log_file.read_text().strip())
     assert parsed["command"] == "analyze"
     assert parsed["decision"]["action"] == "gradient_clipping"
+
+
+def test_cli_analyze_history(tmp_path):
+    import json
+
+    input_file = tmp_path / "history.json"
+    input_file.write_text(json.dumps([
+        {"train_loss": 1.0, "validation_loss": 1.0, "gradient_norm": 0.5, "learning_rate": 0.001},
+        {"train_loss": 0.8, "validation_loss": 1.1, "gradient_norm": 2.5, "learning_rate": 0.001},
+    ]))
+
+    result = subprocess.run(
+        [
+            sys.executable, "-m", "neurooptai.cli", "analyze-history",
+            "--input-file", str(input_file),
+            "--json-output",
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+    parsed = json.loads(result.stdout)
+    assert parsed[-1]["action"] == "gradient_clipping"
