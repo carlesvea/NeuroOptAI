@@ -76,3 +76,19 @@ def analyze_training_history(
         results.append(result)
 
     return results
+
+
+def summarize_training_history(history, **kwargs):
+    decisions = analyze_training_history(history, **kwargs)
+    actions = {}
+
+    for decision in decisions:
+        action = decision["action"]
+        actions[action] = actions.get(action, 0) + 1
+
+    return {
+        "epochs": len(decisions),
+        "final_action": decisions[-1]["action"] if decisions else None,
+        "actions": actions,
+        "decisions": decisions,
+    }

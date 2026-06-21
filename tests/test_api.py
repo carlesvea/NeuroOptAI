@@ -62,3 +62,18 @@ def test_analyze_training_history_requires_validation_loss():
         assert "missing required keys" in str(error)
     else:
         assert False
+
+
+def test_summarize_training_history_api():
+    from neurooptai import summarize_training_history
+
+    history = [
+        {"train_loss": 1.0, "validation_loss": 1.0, "gradient_norm": 0.5, "learning_rate": 0.001},
+        {"train_loss": 0.8, "validation_loss": 1.1, "gradient_norm": 2.5, "learning_rate": 0.001},
+    ]
+
+    summary = summarize_training_history(history)
+
+    assert summary["epochs"] == 2
+    assert summary["final_action"] == "gradient_clipping"
+    assert summary["actions"]["gradient_clipping"] == 1
