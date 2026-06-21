@@ -143,3 +143,21 @@ def test_cli_analyze_history_reports_validation_errors(tmp_path):
 
     assert result.returncode != 0
     assert "missing required keys" in result.stderr
+
+
+def test_cli_analyze_history_reports_validation_errors(tmp_path):
+    import json
+    import subprocess
+    import sys
+
+    input_file = tmp_path / "bad_history.json"
+    input_file.write_text(json.dumps([{"train_loss": 1.0}]))
+
+    result = subprocess.run(
+        [sys.executable, "-m", "neurooptai.cli", "analyze-history", "--input-file", str(input_file)],
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode != 0
+    assert "missing required keys" in result.stderr
