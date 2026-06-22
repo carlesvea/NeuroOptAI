@@ -1,7 +1,7 @@
 import argparse
 import json
 import sys
-from neurooptai import __version__
+from neurooptai import __version__, UniversalHALO
 from neurooptai.api import analyze_training_history
 from neurooptai.controllers.training_controller import TrainingController
 from neurooptai.utils.json_logger import JSONLogger
@@ -97,6 +97,29 @@ def run_analyze_history(args):
         raise SystemExit(1)
 
 
+def run_universal_halo(args):
+    halo = UniversalHALO()
+
+    result = {
+        "should_intervene": halo.should_intervene(args.intervention_cost, args.avoided_cost),
+        "score": halo.score(args.intervention_cost, args.avoided_cost),
+        "class": halo.classify(args.intervention_cost, args.avoided_cost),
+    }
+
+    if args.probability_of_failure is not None:
+        result["expected_avoided_cost"] = halo.expected_avoided_cost(
+            args.probability_of_failure,
+            args.avoided_cost,
+        )
+        result["should_intervene_probabilistic"] = halo.should_intervene_probabilistic(
+            args.intervention_cost,
+            args.probability_of_failure,
+            args.avoided_cost,
+        )
+
+    print(json.dumps(result, indent=2) if args.json_output else result)
+
+
 def main():
     parser = argparse.ArgumentParser(description="NeuroOptAI command line interface")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -129,6 +152,12 @@ def main():
     history.add_argument("--json-output", action="store_true")
     history.add_argument("--log-file", type=str, default=None)
 
+    universal = subparsers.add_parser("universal-halo")
+    universal.add_argument("--intervention-cost", type=float, required=True)
+    universal.add_argument("--avoided-cost", type=float, required=True)
+    universal.add_argument("--probability-of-failure", type=float, default=None)
+    universal.add_argument("--json-output", action="store_true")
+
     args = parser.parse_args()
 
     if args.command == "demo":
@@ -141,6 +170,8 @@ def main():
         run_analyze(args)
     elif args.command == "analyze-history":
         run_analyze_history(args)
+    elif args.command == "universal-halo":
+        run_universal_halo(args)
 
 
 if __name__ == "__main__":
