@@ -161,3 +161,29 @@ def test_cli_analyze_history_reports_validation_errors(tmp_path):
 
     assert result.returncode != 0
     assert "missing required keys" in result.stderr
+
+
+def test_cli_universal_halo_json_output():
+    import json
+    import subprocess
+    import sys
+
+    result = subprocess.run(
+        [
+            sys.executable, "-m", "neurooptai.cli", "universal-halo",
+            "--intervention-cost", "3",
+            "--avoided-cost", "10",
+            "--probability-of-failure", "0.8",
+            "--json-output",
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+    parsed = json.loads(result.stdout)
+
+    assert parsed["should_intervene"] is True
+    assert parsed["class"] == "intervene"
+    assert parsed["expected_avoided_cost"] == 8.0
+    assert parsed["should_intervene_probabilistic"] is True
