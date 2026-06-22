@@ -274,3 +274,13 @@ Universal HALO validates inputs before computing decisions:
 - probability_of_failure must be between 0 and 1
 
 Invalid inputs raise clear ValueError exceptions.
+
+## Universal HALO CLI validation
+
+The `universal-halo` command returns clear CLI errors for invalid inputs.
+
+Examples of invalid input:
+
+- intervention_cost <= 0
+- avoided_cost < 0
+- probability_of_failure outside [0, 1]
