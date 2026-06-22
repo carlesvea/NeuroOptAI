@@ -77,3 +77,10 @@ def test_summarize_training_history_api():
     assert summary["epochs"] == 2
     assert summary["final_action"] == "gradient_clipping"
     assert summary["actions"]["gradient_clipping"] == 1
+
+
+def test_universal_halo_public_import():
+    from neurooptai import UniversalHALO
+
+    halo = UniversalHALO()
+    assert halo.should_intervene(3, 10) is True
