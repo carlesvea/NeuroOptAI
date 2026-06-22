@@ -264,3 +264,13 @@ neurooptai universal-halo --intervention-cost 3 --avoided-cost 10 --json-output
 Run probabilistic HALO:
 
 neurooptai universal-halo --intervention-cost 3 --avoided-cost 10 --probability-of-failure 0.8 --json-output
+
+## Universal HALO validation
+
+Universal HALO validates inputs before computing decisions:
+
+- intervention_cost must be greater than 0
+- avoided_cost must be non-negative
+- probability_of_failure must be between 0 and 1
+
+Invalid inputs raise clear ValueError exceptions.
