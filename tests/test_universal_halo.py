@@ -24,3 +24,25 @@ def test_universal_halo_expected_avoided_cost():
 def test_universal_halo_probabilistic_intervention():
     halo = UniversalHALO()
     assert halo.should_intervene_probabilistic(20, 0.8, 100) is True
+
+
+def test_universal_halo_rejects_zero_intervention_cost():
+    halo = UniversalHALO()
+
+    try:
+        halo.score(0, 10)
+    except ValueError as error:
+        assert "greater than 0" in str(error)
+    else:
+        assert False
+
+
+def test_universal_halo_rejects_invalid_probability():
+    halo = UniversalHALO()
+
+    try:
+        halo.expected_avoided_cost(1.5, 100)
+    except ValueError as error:
+        assert "between 0 and 1" in str(error)
+    else:
+        assert False
