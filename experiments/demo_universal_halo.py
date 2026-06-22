@@ -1,4 +1,4 @@
-from neurooptai.core.universal_halo import UniversalHALO
+from neurooptai import UniversalHALO
 
 halo = UniversalHALO()
 
