@@ -254,3 +254,13 @@ intervention_cost < probability_of_failure * avoided_cost
 Example:
 
 PYTHONPATH=. python experiments/demo_universal_halo.py
+
+## Universal HALO CLI
+
+Run a general cost-benefit HALO decision:
+
+neurooptai universal-halo --intervention-cost 3 --avoided-cost 10 --json-output
+
+Run probabilistic HALO:
+
+neurooptai universal-halo --intervention-cost 3 --avoided-cost 10 --probability-of-failure 0.8 --json-output
