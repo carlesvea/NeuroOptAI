@@ -238,3 +238,19 @@ The input file must contain a list of objects, and each object must include:
 - validation_loss
 
 If the file is missing, invalid JSON, or missing required keys, NeuroOptAI returns a clear CLI error.
+
+## Universal HALO
+
+Universal HALO generalizes cost-aware intervention beyond neural training.
+
+Core rule:
+
+intervention_cost < avoided_cost
+
+Probabilistic rule:
+
+intervention_cost < probability_of_failure * avoided_cost
+
+Example:
+
+PYTHONPATH=. python experiments/demo_universal_halo.py
