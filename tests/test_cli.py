@@ -187,3 +187,18 @@ def test_cli_universal_halo_json_output():
     assert parsed["class"] == "intervene"
     assert parsed["expected_avoided_cost"] == 8.0
     assert parsed["should_intervene_probabilistic"] is True
+
+
+def test_cli_universal_halo_reports_invalid_input():
+    result = subprocess.run(
+        [
+            sys.executable, "-m", "neurooptai.cli", "universal-halo",
+            "--intervention-cost", "0",
+            "--avoided-cost", "10",
+        ],
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode != 0
+    assert "greater than 0" in result.stderr

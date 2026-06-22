@@ -100,25 +100,28 @@ def run_analyze_history(args):
 def run_universal_halo(args):
     halo = UniversalHALO()
 
-    result = {
-        "should_intervene": halo.should_intervene(args.intervention_cost, args.avoided_cost),
-        "score": halo.score(args.intervention_cost, args.avoided_cost),
-        "class": halo.classify(args.intervention_cost, args.avoided_cost),
-    }
+    try:
+        result = {
+            "should_intervene": halo.should_intervene(args.intervention_cost, args.avoided_cost),
+            "score": halo.score(args.intervention_cost, args.avoided_cost),
+            "class": halo.classify(args.intervention_cost, args.avoided_cost),
+        }
 
-    if args.probability_of_failure is not None:
-        result["expected_avoided_cost"] = halo.expected_avoided_cost(
-            args.probability_of_failure,
-            args.avoided_cost,
-        )
-        result["should_intervene_probabilistic"] = halo.should_intervene_probabilistic(
-            args.intervention_cost,
-            args.probability_of_failure,
-            args.avoided_cost,
-        )
+        if args.probability_of_failure is not None:
+            result["expected_avoided_cost"] = halo.expected_avoided_cost(
+                args.probability_of_failure,
+                args.avoided_cost,
+            )
+            result["should_intervene_probabilistic"] = halo.should_intervene_probabilistic(
+                args.intervention_cost,
+                args.probability_of_failure,
+                args.avoided_cost,
+            )
 
-    print(json.dumps(result, indent=2) if args.json_output else result)
-
+        print(json.dumps(result, indent=2) if args.json_output else result)
+    except ValueError as error:
+        print(f"Error: {error}", file=sys.stderr)
+        raise SystemExit(1)
 
 def main():
     parser = argparse.ArgumentParser(description="NeuroOptAI command line interface")
