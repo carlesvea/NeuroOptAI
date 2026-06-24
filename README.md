@@ -284,3 +284,19 @@ Examples of invalid input:
 - intervention_cost <= 0
 - avoided_cost < 0
 - probability_of_failure outside [0, 1]
+
+## Universal HALO decision output
+
+Use the centralized decision method:
+
+from neurooptai import UniversalHALO
+
+halo = UniversalHALO()
+
+result = halo.decision(
+    intervention_cost=3,
+    avoided_cost=10,
+    probability_of_failure=0.8,
+)
+
+print(result)
