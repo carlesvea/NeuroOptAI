@@ -101,22 +101,11 @@ def run_universal_halo(args):
     halo = UniversalHALO()
 
     try:
-        result = {
-            "should_intervene": halo.should_intervene(args.intervention_cost, args.avoided_cost),
-            "score": halo.score(args.intervention_cost, args.avoided_cost),
-            "class": halo.classify(args.intervention_cost, args.avoided_cost),
-        }
-
-        if args.probability_of_failure is not None:
-            result["expected_avoided_cost"] = halo.expected_avoided_cost(
-                args.probability_of_failure,
-                args.avoided_cost,
-            )
-            result["should_intervene_probabilistic"] = halo.should_intervene_probabilistic(
-                args.intervention_cost,
-                args.probability_of_failure,
-                args.avoided_cost,
-            )
+        result = halo.decision(
+            intervention_cost=args.intervention_cost,
+            avoided_cost=args.avoided_cost,
+            probability_of_failure=args.probability_of_failure,
+        )
 
         print(json.dumps(result, indent=2) if args.json_output else result)
     except ValueError as error:
