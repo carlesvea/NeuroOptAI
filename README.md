@@ -300,3 +300,17 @@ result = halo.decision(
 )
 
 print(result)
+
+## Universal HALO functional API
+
+Use Universal HALO without instantiating the class:
+
+from neurooptai import universal_halo_decision
+
+result = universal_halo_decision(
+    intervention_cost=3,
+    avoided_cost=10,
+    probability_of_failure=0.8,
+)
+
+print(result)
